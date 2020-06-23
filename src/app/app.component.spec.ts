@@ -1,31 +1,22 @@
-import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { LoggerService } from './services/logger.service';
+const createSpyObject = jasmine.createSpyObj;
 
 describe('AppComponent', () => {
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        AppComponent
-      ],
-    }).compileComponents();
-  }));
+  const loggerService: LoggerService = createSpyObject('LoggerService', ['info', 'error']);
+  const component = new AppComponent(loggerService);
 
   it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+    expect(component).toBeTruthy();
   });
 
-  it(`should have as title 'unit-test-angular-without-testbed'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('unit-test-angular-without-testbed');
+  it('should log a test message', () => {
+    component.ngOnInit();
+    expect(loggerService.info).toHaveBeenCalledWith('test');
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('unit-test-angular-without-testbed app is running!');
+  it('should log an error when something goes wrong', () => {
+    component.onError();
+    expect(loggerService.error).toHaveBeenCalledWith('Something went wrong');
   });
 });

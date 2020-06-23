@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "unit-test-angular-without-testbed"
+    }
+  },
+  "defaultProject": "unit-test-angular-without-testbed",
+  "cli": {
+    "analytics": false
+  }
 }
